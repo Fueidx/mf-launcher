@@ -1,0 +1,34 @@
+{
+    "name": "mf-launcher",
+    "version": "1.0.0",
+    "description": "A Minecraft launcher written in NodeJS",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "dev": "electronmon ."
+    },
+    "keywords": [],
+    "author": "mk_",
+    "license": "MIT",
+    "dependencies": {
+        "electron-store": "^8.1.0",
+        "minecraft-launcher-core": "^3.16.18",
+        "msmc": "^4.0.3",
+        "node-fetch": "^3.3.2"
+    },
+    "devDependencies": {
+        "electron": "^27.1.0",
+        "electron-packager": "^17.1.2",
+        "electronmon": "^2.0.2"
+    },
+    "electronmon": {
+        "patterns": [
+            "**/*",
+            "!node_modules",
+            "!node_modules/**/*",
+            "!.*",
+            "!**/*.map",
+            "!**/*.store"
+        ]
+    }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; font-src 'self' ; style-src 'self' " />
+    <meta http-equiv="X-Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; font-src 'self' ; style-src 'self' " />
+
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" id="theme">
+</head>
+
+<body class="noselect">
+    <div class="cover"></div>
+    <select id="themes"></select>
+
+    <span id="exit">
+        <svg id="exit-svg" width="40" height="40" viewbox="0 0 40 40">
+            <path d="M 10,10 L 30,30 M 30,10 L 10,30" stroke="currentColor" stroke-width="4" />
+        </svg>
+    </span>
+
+    <h1>Settings</h1>
+    <form id="settings-form">
+        <div>
+            <label for="portable">Portable</label>
+            <input type="checkbox" id="portable">
+        </div>
+
+        <div>
+            <label for="max-memory">Max usable memory by the game: <span></span></label>
+            <input type="range" id="max-memory" min="2" max="16" step="1">
+        </div>
+
+        <div>
+            <label for="launcher-visibility">Launcher visibility</label>
+            <select id="launcher-visibility">
+                <option value="1">Close launcher when game starts</option>
+                <option value="2">Keep launcher open</option>
+                <option value="3">Hide launcher and re-open when game closes</option>
+            </select>
+        </div>
+    </form>
+
+    <script src="./scripts/common.js"></script>
+    <script src="./scripts/settings.js"></script>
+</body>
+
+</html>

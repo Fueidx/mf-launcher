@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; font-src 'self' ; style-src 'self' " />
+    <meta http-equiv="X-Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; font-src 'self' ; style-src 'self' " />
+
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" id="theme">
+</head>
+
+<body class="noselect">
+    <div class="cover"></div>
+    <select id="themes"></select>
+
+    <form id="login-form">
+        <button type="button" id="microsoft-btn">
+            <img src="../images/microsoft.png">
+            <h2>Microsoft</h2>
+        </button>
+
+        <div class="input-group">
+            <input type="text" id="cracked-username" placeholder="Cracked username...">
+            <div class="error-message"></div>
+        </div>
+
+        <input type="submit" value="Login" id="login-btn" disabled>
+    </form>
+
+    <script src="./scripts/login.js"></script>
+    <script src="./scripts/common.js"></script>
+</body>
+
+</html>

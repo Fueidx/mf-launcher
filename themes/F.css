@@ -1,0 +1,176 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf');
+}
+
+:root {
+  /* https://stackoverflow.com/a/68695111 */
+  --text: 225, 225, 249;
+  --background: 2, 8, 4;
+  --primary: 37, 173, 114;
+  --secondary: 8, 38, 15;
+  --accent: 44, 193, 206;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  font-family: 'Open Sans', sans-serif;
+  color: #fff;
+  transition: all ease-in 0.2s;
+}
+
+body {
+  background-image: url('../images/wallpaper2.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(2.5px);
+  z-index: -1;
+}
+
+#themes {
+  position: fixed;
+  left: 0;
+  top: 0;
+  margin: 10px;
+}
+
+button,
+input[type='submit'] {
+  border-radius: 0px;
+  border: none;
+  cursor: pointer;
+}
+
+select {
+  padding: 8px 10px;
+  border-radius: 0px;
+  border: none;
+  cursor: pointer;
+  background-color: rgba(var(--primary), 0.2);
+}
+
+select:hover {
+  box-shadow: 0 0 12px 4px rgba(var(--primary), 0.24);
+}
+
+select > option {
+  background-color: rgba(var(--secondary), 1);
+}
+
+*:disabled {
+  filter: grayscale(100%);
+  cursor: not-allowed !important;
+}
+
+.input-group {
+  display: flex;
+  justify-content: center;
+  flex-direction: column-reverse;
+  gap: 10px;
+}
+
+.error-message {
+  /* color: #f00 !important; */
+  display: inline-block;
+  font-size: 1rem;
+}
+
+.input-group .error-message {
+  display: none;
+}
+
+/* Error Styling */
+
+/* .error label {
+  color: #f00 !important;
+} */
+
+.error input[type='text'] {
+  
+  background-color: rgba(255, 0, 0, 0.7) !important;
+  box-shadow: 0px 0px 10px 8px rgba(255, 0, 0, 0.6) !important;
+}
+
+.error .error-message {
+  display: inline-block;
+  color: #f00;
+}
+
+/* ========== LOGIN PAGE ========== */
+#login-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
+  width: 50%;
+}
+
+#microsoft-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1.75px solid transparent;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#microsoft-btn:hover {
+  background-color: rgba(var(--primary), 0.4);
+  box-shadow: 0 0 12px 10px rgba(var(--primary), 0.24);
+}
+
+#microsoft-btn > img {
+  width: 1.75rem;
+
+  height: auto;
+}
+
+#login-btn {
+  padding: 10px 20px;
+  border: 1.75px solid transparent;
+  background-color: rgba(var(--primary), 0.4);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+#login-btn:hover {
+  box-shadow: 0 0 12px 10px rgba(var(--accent), 0.24);
+  background-color: rgba(var(--accent), 0.4);
+}
+
+#cracked-username {
+  border-radius: 0px;
+  padding: 8px 10px;
+  border: 1.75px solid transparent;
+  background-color: rgba(0, 0, 0, 0.4);
+  accent-color: rgba(var(--primary));
+  align-self: center;
+}
+
+#cracked-username::placeholder {
+  color: rgba(var(--text), 0.75);
+}
+
+#cracked-username:hover,
+#cracked-username:focus {
+  box-shadow: 0 0 12px 8px rgba(var(--primary), 0.24);
+  background-color: rgba(var(--primary), 0.4);
+}
