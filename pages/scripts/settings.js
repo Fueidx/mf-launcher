@@ -1,9 +1,9 @@
 (async () => {
     const memorySlider = document.querySelector('#max-memory');
     const memoryDisplaySpan = document.querySelector('label[for="max-memory"] > span');
-    const previousMaxMemory = await window.api.getConfig(memorySlider.id);
+    const previousMaxMemory = (await window.api.getConfig(memorySlider.id)) || 4;
 
-    memorySlider.value = previousMaxMemory || 4;
+    memorySlider.value = previousMaxMemory;
     memoryDisplaySpan.textContent = previousMaxMemory + 'G' || memorySlider.value + 'G';
     await window.api.setConfig(memorySlider.id, memorySlider.value);
 
