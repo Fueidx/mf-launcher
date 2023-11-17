@@ -69,16 +69,16 @@ ipcMain.on('open-page', (event, name) => {
 });
 
 ipcMain.handle('mc:releases', async (event) => {
-    return await minecraft.releases();
+    return await minecraft.getReleases();
 });
-ipcMain.handle('mc:snapshots', async (event) => {
-    return await minecraft.snapshots();
+ipcMain.handle('mc:all-versions', async (event) => {
+    return await minecraft.getAllVersions();
 });
 ipcMain.handle('mc:release', async (event) => {
-    return await minecraft.latestRelease();
+    return await minecraft.getLatestRelease();
 });
 ipcMain.handle('mc:snapshot', async (event) => {
-    return await minecraft.latestSnapshot();
+    return await minecraft.getLatestSnapshot();
 });
 
 ipcMain.handle('themes', async (event) => {

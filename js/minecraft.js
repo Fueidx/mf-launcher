@@ -1,25 +1,34 @@
-const minecraft = {
-    apiUrl: 'https://launchermeta.mojang.com/mc/game/version_manifest.json',
+// constants
+const API_URL = 'https://launchermeta.mojang.com/mc/game/version_manifest.json';
 
-    releases: async () => {
-        const data = await (await fetch(minecraft.apiUrl)).json();
-        return data.versions.filter((v) => v.type === 'release').map((v) => v.id);
-    },
+// utils
+let cacheData;
 
-    snapshots: async () => {
-        const data = await (await fetch(minecraft.apiUrl)).json();
-        return data.versions.filter((v) => v.type === 'snapshot').map((v) => v.id);
-    },
-
-    latestRelease: async () => {
-        const data = await (await fetch(minecraft.apiUrl)).json();
-        return data.latest.release;
-    },
-
-    latestSnapshot: async () => {
-        const data = await (await fetch(minecraft.apiUrl)).json();
-        return data.latest.snapshot;
-    },
+const fetchData = async () => {
+    if (!cacheData) cacheData = await (await fetch(API_URL)).json();
+    return cacheData;
 };
 
-module.exports = minecraft;
+// functions
+const getReleases = async () => {
+    const data = await fetchData();
+    return data.versions.filter((v) => v.type === 'release').map((v) => v.id);
+};
+
+const getAllVersions = async () => {
+    const data = await fetchData();
+    return data.versions.map((v) => v.id);
+};
+
+const getLatestRelease = async () => {
+    const data = await fetchData();
+    return data.latest.release;
+};
+
+const getLatestSnapshot = async () => {
+    const data = await fetchData();
+    return data.latest.snapshot;
+};
+
+// exports
+module.exports = { getReleases, getAllVersions, getLatestRelease, getLatestSnapshot };

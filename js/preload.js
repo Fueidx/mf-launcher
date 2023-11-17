@@ -4,7 +4,7 @@ contextBridge.exposeInMainWorld('api', {
     openPage: (name) => ipcRenderer.send('open-page', name),
 
     mcVersions: () => ipcRenderer.invoke('mc:releases'),
-    mcSnapshots: () => ipcRenderer.invoke('mc:snapshots'),
+    mcAllVersions: () => ipcRenderer.invoke('mc:all-versions'),
     latestMcVersion: () => ipcRenderer.invoke('mc:release'),
     latestMcSnapshot: () => ipcRenderer.invoke('mc:snapshot'),
 

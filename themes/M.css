@@ -208,7 +208,7 @@ svg#exit-svg {
   gap: 7.5px;
 }
 
-#settings-form>div:first-child {
+#settings-form>div:nth-child(1), #settings-form>div:nth-child(2) {
   flex-direction: row;
   align-items: center;
 }

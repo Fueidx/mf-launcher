@@ -21,6 +21,15 @@
         await window.api.setConfig(portableCheckbox.id, portableCheckbox.checked);
     });
 
+    const snapshotsCheckbox = document.querySelector('#include-snapshots');
+
+    snapshotsCheckbox.checked = (await window.api.getConfig(snapshotsCheckbox.id)) || false;
+    await window.api.setConfig(snapshotsCheckbox.id, snapshotsCheckbox.checked);
+
+    snapshotsCheckbox.addEventListener('change', async () => {
+        await window.api.setConfig(snapshotsCheckbox.id, snapshotsCheckbox.checked);
+    });
+
     const launcherVisibilitySelect = document.querySelector('#launcher-visibility');
 
     launcherVisibilitySelect.value = (await window.api.getConfig(launcherVisibilitySelect.id)) || 1;
