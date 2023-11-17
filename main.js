@@ -30,7 +30,7 @@ function createWindow() {
     });
 
     // win.setMenu(null); // https://stackoverflow.com/a/39092033
-    win.loadFile(path.join(__dirname, 'pages', 'home.html'));
+    win.loadFile(path.join(__dirname, 'pages', profilesStore.get('login') ? 'home.html' : 'login.html'));
     win.on('ready-to-show', win.show);
 
     if (isDevEnv) win.webContents.openDevTools({ mode: 'detach' });

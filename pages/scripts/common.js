@@ -36,4 +36,8 @@
     document.querySelector('span#exit')?.addEventListener('click', async () => {
         await window.api.openPage('home');
     });
+
+    document.querySelector('span#settings')?.addEventListener('click', async () => {
+        await window.api.openPage('settings');
+    });
 })();

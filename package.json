@@ -14,7 +14,8 @@
         "electron-store": "^8.1.0",
         "minecraft-launcher-core": "^3.16.18",
         "msmc": "^4.0.3",
-        "node-fetch": "^3.3.2"
+        "node-fetch": "^3.3.2",
+        "tomate-loaders": "github:doublekekse/tomate-loaders"
     },
     "devDependencies": {
         "electron": "^27.1.0",
