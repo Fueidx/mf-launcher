@@ -23,9 +23,11 @@ function createWindow() {
         resizable: false,
         show: false,
         title: 'MF Launcher',
+        backgroundColor: '#000',
         icon: path.join(__dirname, 'images', 'icon.ico'), // app icon
         webPreferences: {
             preload: path.join(__dirname, 'js', 'preload.js'), // preload script
+            spellcheck: false,
         },
     });
 
@@ -33,7 +35,10 @@ function createWindow() {
     win.loadFile(path.join(__dirname, 'pages', profilesStore.get('login') ? 'home.html' : 'login.html'));
     win.on('ready-to-show', win.show);
 
-    if (isDevEnv) win.webContents.openDevTools({ mode: 'detach' });
+    win.webContents.on('did-start-loading', () => {});
+    win.webContents.on('did-stop-loading', () => {});
+
+    // if (isDevEnv) win.webContents.openDevTools({ mode: 'detach' });
 }
 
 app.whenReady().then(() => {
