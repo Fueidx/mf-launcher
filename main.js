@@ -5,6 +5,7 @@ const Store = require('electron-store');
 const minecraft = require('./js/minecraft');
 const { loginCracked, loginMicrosoft } = require('./js/auth');
 const { launchGame, getGamePath } = require('./js/game');
+const { fabric, forge, quilt } = require('tomate-loaders');
 
 const defaultStoreOptions = {
     // encryptionKey: 'MF', // obfuscate stores so they aren't easily modified ( https://github.com/sindresorhus/electron-store/tree/main#encryptionkey )
@@ -71,7 +72,7 @@ app.on('browser-window-blur', function () {
 
 // ========== IPC EVENTS ==========
 ipcMain.on('open-page', (event, name) => {
-    BrowserWindow.getFocusedWindow()?.loadFile(path.join(__dirname, 'pages', `${name}.html`));
+    BrowserWindow.getFocusedWindow().loadFile(path.join(__dirname, 'pages', `${name}.html`));
 });
 
 ipcMain.handle('mc:releases', async (event) => {
@@ -116,14 +117,44 @@ ipcMain.handle('login:cracked', async (event, username) => {
 
 ipcMain.handle('launch', async (event) => {
     const GAME_PATH = getGamePath(configStore.get('portable'));
-    const GAME_OPTIONS = {
-        authorization: profilesStore.get('login'),
+    const GAME_VERSION = configStore.get('game-version.number');
+    const MOD_LOADER = configStore.get('mod-loader');
+
+    let MODLOADER_OPTIONS = {
         root: GAME_PATH,
-        cache: path.join(GAME_PATH, '.cache'),
         version: {
-            number: configStore.get('game-version.number'),
+            number: GAME_VERSION,
             type: configStore.get('game-version.type') === 'snapshot' ? 'snapshot' : 'release',
         },
+    };
+
+    // https://github.com/doublekekse/tomate-loaders/blob/main/README.md?plain=1#L43-L46
+    const tomateLoadersConfig = {
+        gameVersion: GAME_VERSION,
+        rootPath: GAME_PATH,
+    };
+
+    switch (MOD_LOADER) {
+        case 'none':
+            break;
+        case 'fabric':
+            MODLOADER_OPTIONS = await fabric.getMCLCLaunchConfig(tomateLoadersConfig);
+            break;
+        case 'forge':
+            MODLOADER_OPTIONS = await forge.getMCLCLaunchConfig(tomateLoadersConfig);
+            break;
+        case 'quilt':
+            MODLOADER_OPTIONS = await quilt.getMCLCLaunchConfig(tomateLoadersConfig);
+            break;
+        default:
+            break;
+    }
+
+    // https://github.com/Pierce01/MinecraftLauncher-core#launch
+    const GAME_OPTIONS = {
+        ...MODLOADER_OPTIONS,
+        authorization: profilesStore.get('login'),
+        cache: path.join(GAME_PATH, '.cache'),
         memory: {
             min: '2G',
             max: configStore.get('max-memory') + 'G',
