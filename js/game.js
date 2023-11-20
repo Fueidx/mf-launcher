@@ -9,17 +9,20 @@ function getGamePath(portable = false) {
         : path.join(process.env.HOME, '.MF-launcher'); // else (OSX, Linux) home dir
 }
 
-async function launchGame(options) {
-    if (!options) throw new Error('Missing game options');
+function launchGame(options) {
+    return new Promise((resolve, reject) => {
+        if (!options) reject('Missing game options');
 
-    const LAUNCHER = new Client();
+        const LAUNCHER = new Client();
 
-    LAUNCHER.on('debug', (e) => console.log(e));
-    LAUNCHER.on('data', (e) => console.log(e));
-    LAUNCHER.on('download', (e) => console.log(e));
-    LAUNCHER.on('progress', (e) => console.log(e));
+        LAUNCHER.on('debug', (e) => console.log(e));
+        LAUNCHER.on('data', (e) => console.log(e));
+        LAUNCHER.on('download', (e) => console.log(e));
+        LAUNCHER.on('progress', (e) => console.log(e));
+        LAUNCHER.on('close', resolve);
 
-    await LAUNCHER.launch(options);
+        LAUNCHER.launch(options);
+    });
 }
 
 module.exports = { getGamePath, launchGame };

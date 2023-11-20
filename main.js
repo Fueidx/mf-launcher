@@ -114,9 +114,9 @@ ipcMain.handle('login:cracked', async (event, username) => {
     return true;
 });
 
-ipcMain.on('launch', async (event) => {
+ipcMain.handle('launch', async (event) => {
     const GAME_PATH = getGamePath(configStore.get('portable'));
-    await launchGame({
+    const GAME_OPTIONS = {
         authorization: profilesStore.get('login'),
         root: GAME_PATH,
         cache: path.join(GAME_PATH, '.cache'),
@@ -129,18 +129,30 @@ ipcMain.on('launch', async (event) => {
             max: configStore.get('max-memory') + 'G',
         },
         javaPath: 'javaw',
-    });
+    };
 
     const LAUNCHER_BEHAVIOR = parseInt(configStore.get('launcher-visibility'));
     switch (LAUNCHER_BEHAVIOR) {
         case 1:
-            process.exit(0); // Close launcher when game starts
+            await launchGame(GAME_OPTIONS);
+            process.exit(0); // close launcher when game starts
         case 2:
-            break; // Keep launcher open
+            await launchGame(GAME_OPTIONS);
+            break; // keep launcher open
         case 3:
-            // TODO: Hide launcher and re-open when game closes
+            const CURRENT_WINDOW = BrowserWindow.getFocusedWindow();
+
+            CURRENT_WINDOW.setSkipTaskbar(true);
+            CURRENT_WINDOW.hide(); // hide window
+
+            await launchGame(GAME_OPTIONS); // wait for game to close
+
+            CURRENT_WINDOW.setSkipTaskbar(false);
+            CURRENT_WINDOW.show(); // show window
             break;
         default:
             break;
     }
+
+    return true;
 });

@@ -3,7 +3,10 @@
         ? await window.api.mcAllVersions()
         : await window.api.mcVersions();
     const versionsSelect = document.querySelector('#game-versions');
-    const previousGameVersion = (await window.api.getConfig('game-version')) || GAME_VERSIONS[0];
+
+    const prevVNumber = await window.api.getConfig('game-version.number');
+    const prevVType = await window.api.getConfig('game-version.type');
+    const previousGameVersion = prevVNumber + ' - ' + prevVType || GAME_VERSIONS[0];
 
     GAME_VERSIONS.forEach((version) => {
         const option = document.createElement('option');
@@ -39,11 +42,15 @@
 
     window.api.setConfig('mod-loader', modLoaders.find((el) => el.checked).id);
 
-    document.querySelector('#main-form').addEventListener('submit', () => {
+    document.querySelector('#main-form').addEventListener('submit', async () => {
         const launchBtn = document.querySelector('#launch-btn');
 
-        window.api.launchGame();
         launchBtn.disabled = true;
         launchBtn.value = 'Launched';
+
+        await window.api.launchGame();
+
+        launchBtn.disabled = false;
+        launchBtn.value = 'Launch';
     });
 })();
