@@ -15,7 +15,7 @@ const defaultStoreOptions = {
 const profilesStore = new Store({ name: 'profiles', ...defaultStoreOptions }); // store for profiles
 const configStore = new Store({ name: 'config', ...defaultStoreOptions }); // store for user settings
 
-const isDevEnv = !app.isPackaged;
+// const isDevEnv = !app.isPackaged;
 
 function createWindow() {
     const win = new BrowserWindow({
