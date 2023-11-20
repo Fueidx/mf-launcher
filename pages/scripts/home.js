@@ -14,10 +14,16 @@
 
         versionsSelect.appendChild(option);
     });
-    await window.api.setConfig('game-version', versionsSelect.value);
+    await window.api.setConfig('game-version', {
+        number: versionsSelect.value.split(' - ')[0],
+        type: versionsSelect.value.split(' - ')[1],
+    });
 
     versionsSelect.addEventListener('change', async () => {
-        await window.api.setConfig('game-version', versionsSelect.value);
+        await window.api.setConfig('game-version', {
+            number: versionsSelect.value.split(' - ')[0],
+            type: versionsSelect.value.split(' - ')[1],
+        });
     });
 
     const modLoaders = Array.from(document.querySelectorAll('fieldset input[type="radio"]'));

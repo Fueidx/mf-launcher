@@ -12,12 +12,12 @@ const fetchData = async () => {
 // functions
 const getReleases = async () => {
     const data = await fetchData();
-    return data.versions.filter((v) => v.type === 'release').map((v) => v.id);
+    return data.versions.filter((v) => v.type === 'release').map((v) => `${v.id} - ${v.type}`);
 };
 
 const getAllVersions = async () => {
     const data = await fetchData();
-    return data.versions.map((v) => v.id);
+    return data.versions.map((v) => `${v.id} - ${v.type}`);
 };
 
 const getLatestRelease = async () => {

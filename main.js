@@ -121,8 +121,8 @@ ipcMain.on('launch', async (event) => {
         root: GAME_PATH,
         cache: path.join(GAME_PATH, '.cache'),
         version: {
-            number: configStore.get('game-version'),
-            type: 'release',
+            number: configStore.get('game-version.number'),
+            type: configStore.get('game-version.type') === 'snapshot' ? 'snapshot' : 'release',
         },
         memory: {
             min: '2G',
