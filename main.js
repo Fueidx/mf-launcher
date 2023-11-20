@@ -4,6 +4,7 @@ const fs = require('fs');
 const Store = require('electron-store');
 const minecraft = require('./js/minecraft');
 const { loginCracked, loginMicrosoft } = require('./js/auth');
+const { launchGame, getGamePath } = require('./js/game');
 
 const defaultStoreOptions = {
     // encryptionKey: 'MF', // obfuscate stores so they aren't easily modified ( https://github.com/sindresorhus/electron-store/tree/main#encryptionkey )
@@ -105,18 +106,41 @@ ipcMain.on('setConfig', (event, key, value) => configStore.set(key, value));
 ipcMain.handle('getConfig', (event, key) => configStore.get(key));
 
 ipcMain.handle('login:microsoft', async (event) => {
-    try {
-        profilesStore.set('login', await loginMicrosoft());
-    } catch (error) {
-        return error?.message;
-    }
+    profilesStore.set('login', await loginMicrosoft());
     return true;
 });
 ipcMain.handle('login:cracked', async (event, username) => {
-    try {
-        profilesStore.set('login', await loginCracked(username));
-    } catch (error) {
-        return error?.message;
-    }
+    profilesStore.set('login', await loginCracked(username));
     return true;
+});
+
+ipcMain.on('launch', async (event) => {
+    const GAME_PATH = getGamePath(configStore.get('portable'));
+    await launchGame({
+        authorization: profilesStore.get('login'),
+        root: GAME_PATH,
+        cache: path.join(GAME_PATH, '.cache'),
+        version: {
+            number: configStore.get('game-version'),
+            type: 'release',
+        },
+        memory: {
+            min: '2G',
+            max: configStore.get('max-memory') + 'G',
+        },
+        javaPath: 'javaw',
+    });
+
+    const LAUNCHER_BEHAVIOR = parseInt(configStore.get('launcher-visibility'));
+    switch (LAUNCHER_BEHAVIOR) {
+        case 1:
+            process.exit(0); // Close launcher when game starts
+        case 2:
+            break; // Keep launcher open
+        case 3:
+            // TODO: Hide launcher and re-open when game closes
+            break;
+        default:
+            break;
+    }
 });

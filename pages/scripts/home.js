@@ -32,4 +32,12 @@
     });
 
     window.api.setConfig('mod-loader', modLoaders.find((el) => el.checked).id);
+
+    document.querySelector('#main-form').addEventListener('submit', () => {
+        const launchBtn = document.querySelector('#launch-btn');
+
+        window.api.launchGame();
+        launchBtn.disabled = true;
+        launchBtn.value = 'Launched';
+    });
 })();

@@ -15,4 +15,6 @@ contextBridge.exposeInMainWorld('api', {
 
     loginMicrosoft: () => ipcRenderer.invoke('login:microsoft'),
     loginCracked: (username) => ipcRenderer.invoke('login:cracked', username),
+
+    launchGame: () => ipcRenderer.send('launch'),
 });
