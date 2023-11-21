@@ -156,9 +156,7 @@ ipcMain.handle('launch', async (event) => {
         javaPath: 'javaw',
     };
 
-    console.log(GAME_OPTIONS);
-
-    const LAUNCHER_BEHAVIOR = parseInt(configStore.get('launcher-visibility'));
+    const LAUNCHER_BEHAVIOR = parseInt(configStore.get('launcher-visibility')) || 1;
     switch (LAUNCHER_BEHAVIOR) {
         case 1:
             configStore.set('launching', true);
@@ -177,7 +175,7 @@ ipcMain.handle('launch', async (event) => {
             CURRENT_WINDOW.hide(); // hide window
 
             configStore.set('launching', true);
-            await launchGame(GAME_OPTIONS); // wait for game to close
+            await launchGame(GAME_OPTIONS, true); // wait for game to close
             configStore.set('launching', false);
 
             CURRENT_WINDOW.setSkipTaskbar(false);

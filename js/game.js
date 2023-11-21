@@ -9,7 +9,7 @@ function getGamePath(portable = false) {
         : path.join(process.env.HOME, '.MF-launcher'); // else (OSX, Linux) home dir
 }
 
-function launchGame(options) {
+function launchGame(options, wait = false) {
     return new Promise((resolve, reject) => {
         if (!options) reject('Missing game options');
 
@@ -19,9 +19,11 @@ function launchGame(options) {
         LAUNCHER.on('data', (e) => console.log(e));
         LAUNCHER.on('download', (e) => console.log(e));
         LAUNCHER.on('progress', (e) => console.log(e));
-        LAUNCHER.on('close', resolve);
 
-        LAUNCHER.launch(options);
+        const launchPromise = LAUNCHER.launch(options);
+
+        if (wait) LAUNCHER.on('close', resolve);
+        else launchPromise.then(resolve);
     });
 }
 
