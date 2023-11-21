@@ -81,12 +81,6 @@ ipcMain.handle('mc:releases', async (event) => {
 ipcMain.handle('mc:all-versions', async (event) => {
     return await minecraft.getAllVersions();
 });
-ipcMain.handle('mc:release', async (event) => {
-    return await minecraft.getLatestRelease();
-});
-ipcMain.handle('mc:snapshot', async (event) => {
-    return await minecraft.getLatestSnapshot();
-});
 
 ipcMain.handle('themes', async (event) => {
     const dir = path.join(__dirname, 'themes'); // dunno if join() is needed
@@ -157,18 +151,24 @@ ipcMain.handle('launch', async (event) => {
         cache: path.join(GAME_PATH, '.cache'),
         memory: {
             min: '2G',
-            max: configStore.get('max-memory') + 'G',
+            max: (configStore.get('max-memory') || 4) + 'G',
         },
         javaPath: 'javaw',
     };
 
+    console.log(GAME_OPTIONS);
+
     const LAUNCHER_BEHAVIOR = parseInt(configStore.get('launcher-visibility'));
     switch (LAUNCHER_BEHAVIOR) {
         case 1:
+            configStore.set('launching', true);
             await launchGame(GAME_OPTIONS);
+            configStore.set('launching', false);
             process.exit(0); // close launcher when game starts
         case 2:
+            configStore.set('launching', true);
             await launchGame(GAME_OPTIONS);
+            configStore.set('launching', false);
             break; // keep launcher open
         case 3:
             const CURRENT_WINDOW = BrowserWindow.getFocusedWindow();
@@ -176,7 +176,9 @@ ipcMain.handle('launch', async (event) => {
             CURRENT_WINDOW.setSkipTaskbar(true);
             CURRENT_WINDOW.hide(); // hide window
 
+            configStore.set('launching', true);
             await launchGame(GAME_OPTIONS); // wait for game to close
+            configStore.set('launching', false);
 
             CURRENT_WINDOW.setSkipTaskbar(false);
             CURRENT_WINDOW.show(); // show window
@@ -187,3 +189,23 @@ ipcMain.handle('launch', async (event) => {
 
     return true;
 });
+
+// https://stackoverflow.com/a/14032965
+process.stdin.resume(); // so the program will not close instantly
+
+function exitHandler() {
+    configStore.set('launching', false); // remove launching flag if launcher gets closed during launch
+}
+
+// do something when app is closing
+process.on('exit', exitHandler);
+
+// catches ctrl+c event
+process.on('SIGINT', exitHandler);
+
+// catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR1', exitHandler);
+process.on('SIGUSR2', exitHandler);
+
+// catches uncaught exceptions
+process.on('uncaughtException', exitHandler);

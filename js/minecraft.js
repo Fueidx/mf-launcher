@@ -20,15 +20,5 @@ const getAllVersions = async () => {
     return data.versions.map((v) => `${v.id} - ${v.type}`);
 };
 
-const getLatestRelease = async () => {
-    const data = await fetchData();
-    return data.latest.release;
-};
-
-const getLatestSnapshot = async () => {
-    const data = await fetchData();
-    return data.latest.snapshot;
-};
-
 // exports
-module.exports = { getReleases, getAllVersions, getLatestRelease, getLatestSnapshot };
+module.exports = { getReleases, getAllVersions };

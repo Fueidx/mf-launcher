@@ -3,6 +3,7 @@
         ? await window.api.mcAllVersions()
         : await window.api.mcVersions();
     const versionsSelect = document.querySelector('#game-versions');
+    const launchBtn = document.querySelector('#launch-btn');
 
     const prevVNumber = await window.api.getConfig('game-version.number');
     const prevVType = await window.api.getConfig('game-version.type');
@@ -79,15 +80,22 @@
         });
     });
 
-    document.querySelector('#main-form').addEventListener('submit', async () => {
-        const launchBtn = document.querySelector('#launch-btn');
-
+    function disableLaunch() {
         launchBtn.disabled = true;
         launchBtn.value = 'Launched';
+    }
 
-        await window.api.launchGame();
-
+    function enableLaunch() {
         launchBtn.disabled = false;
         launchBtn.value = 'Launch';
+    }
+
+    if (await window.api.getConfig('launch')) disableLaunch();
+    else enableLaunch();
+
+    document.querySelector('#main-form').addEventListener('submit', async () => {
+        disableLaunch();
+        await window.api.launchGame();
+        enableLaunch();
     });
 })();

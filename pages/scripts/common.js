@@ -10,10 +10,10 @@
     const themesSelect = document.querySelector('#themes');
     const previousTheme = (await window.api.getConfig('theme')) || DEFAULT_THEME;
 
-    async function applyTheme(path) {
+    function applyTheme(path) {
         document.querySelector('#theme').setAttribute('href', path);
         const selectedTheme = THEMES.find((theme) => theme.path === path);
-        await window.api.setConfig('theme', selectedTheme);
+        window.api.setConfig('theme', selectedTheme);
     }
 
     THEMES.forEach((theme) => {
@@ -29,15 +29,15 @@
         themesSelect.appendChild(option);
     });
 
-    themesSelect.addEventListener('change', async () => {
-        await applyTheme(themesSelect.value);
+    themesSelect.addEventListener('change', () => {
+        applyTheme(themesSelect.value);
     });
 
-    document.querySelector('span#exit')?.addEventListener('click', async () => {
-        await window.api.openPage('home');
+    document.querySelector('span#exit')?.addEventListener('click', () => {
+        window.api.openPage('home');
     });
 
-    document.querySelector('span#settings')?.addEventListener('click', async () => {
-        await window.api.openPage('settings');
+    document.querySelector('span#settings')?.addEventListener('click', () => {
+        window.api.openPage('settings');
     });
 })();
