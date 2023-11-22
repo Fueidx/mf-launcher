@@ -31,5 +31,7 @@
             "!**/*.map",
             "!**/*.store"
         ]
-    }
+    },
+    "repository": "https://github.com/madkarmaa/mf-launcher.git",
+    "private": false
 }
